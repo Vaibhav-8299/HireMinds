@@ -1,0 +1,102 @@
+<div class="page-container">
+  
+  @if (isLoading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Analyzing Assessment Results...</p>
+    </div>
+  } @else if (resultData()) {
+
+    <!-- Alert Banner -->
+    @if (resultData()!.status === 'TestTaken') {
+      <div class="alert alert-info glass-card" style="margin-bottom: 20px; text-align: center; border-left: 4px solid var(--accent-purple);">
+        <h3 style="margin: 0; font-size: 16px; color: var(--text-primary);">Under Review</h3>
+        <p style="margin: 5px 0 0 0; color: var(--text-secondary); font-size: 14px;">The recruiter will be publishing the selection result soon! Check your Notifications or My Applications tab for updates.</p>
+      </div>
+    }
+
+    <!-- 1. Score Section (Top Center) -->
+    <div class="score-section">
+      <div class="score-card">
+        
+        <!-- CSS Conic Gradient Circular Gauge -->
+        <div class="circular-gauge" 
+             [style.--score-degree]="(resultData()!.percentage * 3.6) + 'deg'"
+             [style.--score-color]="getScoreHexColor(resultData()!.percentage)">
+          <div class="gauge-inner">
+            <span class="score-value">{{ resultData()!.score }}/{{ resultData()!.totalQuestions }}</span>
+            <span class="score-label">Score</span>
+          </div>
+        </div>
+
+        <div class="score-text">
+          @if (resultData()!.percentage >= 70) {
+            <h3 style="color: var(--success)">Excellent Performance!</h3>
+            <p>You have demonstrated strong proficiency.</p>
+          } @else if (resultData()!.percentage >= 50) {
+            <h3 style="color: var(--warning)">Good Effort!</h3>
+            <p>Solid foundation, but room for improvement.</p>
+          } @else {
+            <h3 style="color: var(--danger)">Needs Practice</h3>
+            <p>Review the topics below and try again soon.</p>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Two-Column Layout for Topics & AI Feedback -->
+    <div class="results-grid">
+      
+      <!-- Left Column: Topic Performance -->
+      <div class="glass-card topics-card">
+        <div class="card-header">
+          <h3>📊 Topic Performance</h3>
+        </div>
+        
+        <div class="topics-list">
+          @for (topic of topicsList(); track topic.name) {
+            <div class="topic-item">
+              <div class="topic-meta">
+                <span class="topic-name">{{ topic.name }}</span>
+                <span class="topic-numbers">{{ topic.correct }}/{{ topic.total }} ({{ topic.percentage }}%)</span>
+              </div>
+              
+              <!-- Animated Horizontal Bar -->
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill" 
+                     [class.bg-green]="topic.colorClass === 'green'"
+                     [class.bg-yellow]="topic.colorClass === 'yellow'"
+                     [class.bg-red]="topic.colorClass === 'red'"
+                     [style.width.%]="topic.percentage">
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Right Column: AI Coach Feedback -->
+      <div class="glass-card ai-card">
+        <div class="card-header ai-header">
+          <h3>🤖 AI Coach Feedback</h3>
+          <span class="badge badge-info ai-badge">Powered by Gemini</span>
+        </div>
+        
+        <div class="ai-content">
+          <!-- We use pre-wrap so the formatting (paragraphs, lists) from Gemini is respected -->
+          <p class="typewriter-text">{{ displayedFeedback() }}<span class="cursor">|</span></p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom Actions -->
+    <div class="actions-section">
+      <a routerLink="/candidate/applications" class="btn btn-secondary">
+        &larr; Back to My Applications
+      </a>
+    </div>
+
+  }
+
+</div>

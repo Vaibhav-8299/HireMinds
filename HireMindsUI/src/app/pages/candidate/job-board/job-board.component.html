@@ -1,0 +1,109 @@
+<div class="page-container">
+  
+  <!-- Toast Notification -->
+  @if (toastMessage()) {
+    <div class="toast-container fadeIn">
+      <div class="toast" [class.toast-error]="toastType() === 'error'">
+        {{ toastMessage() }}
+      </div>
+    </div>
+  }
+
+  <div class="page-header">
+    <h2>Job Board</h2>
+    <p>Discover and apply for your next great opportunity.</p>
+  </div>
+
+  <!-- Search & Filter Bar -->
+  <div class="filter-bar glass-card">
+    <div class="filter-inputs">
+      <div class="input-wrapper">
+        <span class="icon">🔍</span>
+        <input type="text" class="form-input" 
+               [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event); onFilterChange()" 
+               placeholder="Search by job title...">
+      </div>
+      
+      <div class="input-wrapper">
+        <span class="icon">📍</span>
+        <input type="text" class="form-input" 
+               [ngModel]="locationFilter()" (ngModelChange)="locationFilter.set($event); onFilterChange()" 
+               placeholder="Filter by location...">
+      </div>
+
+      <div class="input-wrapper">
+        <span class="icon">🏢</span>
+        <input type="text" class="form-input" 
+               [ngModel]="companyFilter()" (ngModelChange)="companyFilter.set($event); onFilterChange()" 
+               placeholder="Filter by company...">
+      </div>
+    </div>
+    
+    <button class="btn btn-secondary clear-btn" (click)="clearFilters()">Clear Filters</button>
+  </div>
+
+  <!-- Content Area -->
+  @if (isLoading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading opportunities...</p>
+    </div>
+  } @else if (jobs().length === 0) {
+    <div class="empty-state glass-card">
+      <h3>No jobs found 😢</h3>
+      <p>Try adjusting your search filters.</p>
+      <button class="btn btn-primary" (click)="clearFilters()">Reset Search</button>
+    </div>
+  } @else {
+    <!-- Responsive Job Grid -->
+    <div class="job-grid">
+      @for (job of jobs(); track job.id) {
+        <div class="glass-card job-card">
+          <div class="job-header">
+            <h3 class="job-title">{{ job.title }}</h3>
+            <span class="job-date">Posted {{ formatDate(job.postedAt) }}</span>
+          </div>
+          
+          <div class="job-meta">
+            <span class="meta-item">🏢 {{ job.companyName }}</span>
+            <span class="meta-item">📍 {{ job.location }}</span>
+          </div>
+
+          <p class="job-desc">{{ job.description }}</p>
+
+          <div class="job-eligibility">
+            <span class="badge badge-info">{{ job.requiredDegree }}</span>
+            <span class="badge badge-info">{{ job.requiredBranch }}</span>
+            @if (job.minBTechScore) {
+              <span class="badge badge-warning">Min {{ job.minBTechScore }}% B.Tech</span>
+            }
+            @if (job.min10thScore) {
+              <span class="badge badge-warning">Min {{ job.min10thScore }}% 10th</span>
+            }
+            @if (job.min12thScore) {
+              <span class="badge badge-warning">Min {{ job.min12thScore }}% 12th</span>
+            }
+          </div>
+
+          <div class="job-footer">
+            @if (isCooldownActive(job.id)) {
+              <div class="cooldown-msg mb-2">
+                <small class="text-warning">
+                  You have recently appeared for this job. You will be eligible again after {{ getEligibilityDate(job.id) }}.
+                </small>
+              </div>
+              <button class="btn btn-success applied-btn" disabled>
+                Applied ✓
+              </button>
+            } @else {
+              <button class="btn btn-primary" (click)="applyToJob(job.id)">
+                Apply Now
+              </button>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+</div>

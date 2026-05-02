@@ -1,0 +1,27 @@
+<!-- Global Toast Notifications -->
+<app-toast></app-toast>
+
+<!-- Render Candidate Layout if logged in as Candidate -->
+@if (authService.isLoggedIn() && authService.getUserRole() === 'Candidate') {
+  <app-navbar></app-navbar>
+  <main class="candidate-main">
+    <router-outlet></router-outlet>
+  </main>
+}
+
+<!-- Render Recruiter Layout if logged in as Recruiter -->
+@else if (authService.isLoggedIn() && authService.getUserRole() === 'Recruiter') {
+  <div class="recruiter-layout">
+    <app-sidebar></app-sidebar>
+    <main class="recruiter-main">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+}
+
+<!-- Render Auth Pages (Login/Register) if not logged in -->
+@else {
+  <main class="auth-main">
+    <router-outlet></router-outlet>
+  </main>
+}

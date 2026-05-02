@@ -1,0 +1,54 @@
+<div class="auth-container">
+  <!-- Decorative Background Orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div class="glass-card auth-card">
+    <div class="auth-header">
+      <h2>Welcome Back</h2>
+      <p>Log in to continue to HireMinds</p>
+    </div>
+
+    @if (errorMessage) {
+      <div class="alert badge-danger">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      
+      <!-- Email Field -->
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" class="form-input" formControlName="email" placeholder="john@example.com">
+        @if (f['email'].touched && f['email'].errors) {
+          <div class="error-text">
+            @if (f['email'].errors['required']) { <span>Email is required</span> }
+            @if (f['email'].errors['email']) { <span>Please enter a valid email</span> }
+          </div>
+        }
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-input" formControlName="password" placeholder="••••••••">
+        @if (f['password'].touched && f['password'].errors) {
+          <div class="error-text">
+            @if (f['password'].errors['required']) { <span>Password is required</span> }
+            @if (f['password'].errors['minlength']) { <span>Password must be at least 6 characters</span> }
+          </div>
+        }
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 mt-4" [disabled]="isLoading">
+        {{ isLoading ? 'Logging in...' : 'Login' }}
+      </button>
+
+    </form>
+
+    <div class="auth-footer">
+      <p>Don't have an account? <a routerLink="/register">Register</a></p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+<div class="page-container">
+  
+  @if (toastMessage()) {
+    <div class="toast-container fadeIn">
+      <div class="toast">{{ toastMessage() }}</div>
+    </div>
+  }
+
+  <div class="page-header">
+    <div class="header-left">
+      <h2>My Jobs</h2>
+      <p>Manage your job postings and review applicants.</p>
+    </div>
+    <div class="header-right">
+      <a routerLink="/recruiter/post-job" class="btn btn-primary">➕ Post New Job</a>
+    </div>
+  </div>
+
+  @if (isLoading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading jobs...</p>
+    </div>
+  } @else if (jobs().length === 0) {
+    <div class="empty-state glass-card">
+      <h3>No jobs posted yet</h3>
+      <p>Start hiring by creating your first job posting.</p>
+      <a routerLink="/recruiter/post-job" class="btn btn-primary mt-3">Post a Job</a>
+    </div>
+  } @else {
+    
+    <div class="jobs-grid">
+      @for (job of jobs(); track job.id) {
+        <div class="job-card glass-card">
+          
+          <div class="card-top">
+            <h3 class="job-title">{{ job.title }}</h3>
+            <span class="applicant-badge">👥 {{ job.applicantCount }} Applicants</span>
+          </div>
+          
+          <div class="job-meta">
+            <span>🏢 {{ job.companyName }}</span>
+            <span>📍 {{ job.location }}</span>
+          </div>
+
+          <div class="job-eligibility">
+            <span class="badge badge-info">{{ job.requiredDegree }}</span>
+            <span class="badge badge-info">{{ job.requiredBranch }}</span>
+          </div>
+
+          <div class="card-bottom">
+            <a [routerLink]="['/recruiter/applications', job.id]" class="btn btn-secondary w-100">
+              View Applicants
+            </a>
+          </div>
+
+        </div>
+      }
+    </div>
+
+  }
+</div>

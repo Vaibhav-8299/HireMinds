@@ -1,0 +1,131 @@
+<div class="page-container">
+  
+  <div class="page-header">
+    <h2>Create New Test</h2>
+    <p>Design an assessment for your job postings.</p>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="alert badge-danger">{{ errorMessage() }}</div>
+  }
+
+  <form [formGroup]="testForm" (ngSubmit)="onSubmit()">
+    
+    <!-- Test Meta Details -->
+    <div class="glass-card test-meta-card mb-4">
+      <div class="form-row">
+        <div class="form-group flex-2">
+          <label class="form-label">Test Title</label>
+          <input type="text" class="form-input" formControlName="title" placeholder="e.g. Senior Angular Developer Assessment">
+          @if (f['title'].touched && f['title'].errors) {
+            <span class="error-text">Title is required</span>
+          }
+        </div>
+
+        <div class="form-group flex-1">
+          <label class="form-label">Time Limit (Minutes)</label>
+          <input type="number" class="form-input" formControlName="timeLimitMinutes">
+        </div>
+      </div>
+    </div>
+
+    <!-- Questions List -->
+    <div class="questions-section">
+      <div class="section-header">
+        <h3>Questions ({{ questionsFormArray.length }})</h3>
+        @if (!showAddQuestionForm()) {
+          <button type="button" class="btn btn-primary btn-sm" (click)="toggleAddQuestionForm()">➕ Add Question</button>
+        }
+      </div>
+
+      <!-- Render Added Questions -->
+      <div class="questions-list">
+        @for (q of questionsFormArray.value; track $index) {
+          <div class="question-card glass-card">
+            <div class="q-header">
+              <span class="q-number">Q{{ $index + 1 }}</span>
+              <div class="q-badges">
+                <span class="badge badge-info">{{ q.topic }}</span>
+                <span class="badge" 
+                      [ngClass]="{'badge-success': q.difficulty === 'Easy', 'badge-warning': q.difficulty === 'Medium', 'badge-danger': q.difficulty === 'Hard'}">
+                  {{ q.difficulty }}
+                </span>
+              </div>
+              <button type="button" class="remove-btn" (click)="removeQuestion($index)">&times;</button>
+            </div>
+            <p class="q-text">{{ q.text }}</p>
+          </div>
+        }
+      </div>
+
+      <!-- Add New Question Expandable Form -->
+      @if (showAddQuestionForm()) {
+        <div class="add-question-box glass-card" [formGroup]="newQuestionForm">
+          <h4>New Question</h4>
+          
+          <div class="form-group">
+            <label class="form-label">Question Text</label>
+            <textarea class="form-input" rows="3" formControlName="text" placeholder="What is the difference between..."></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label class="form-label">Topic</label>
+              <input type="text" class="form-input" formControlName="topic" placeholder="e.g. Angular, C#, SQL">
+            </div>
+            <div class="form-group flex-1">
+              <label class="form-label">Difficulty</label>
+              <select class="form-input" formControlName="difficulty">
+                <option value="Easy">Easy</option>
+                <option value="Medium">Medium</option>
+                <option value="Hard">Hard</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Options Setup -->
+          <div class="options-setup">
+            <label class="form-label">Options (Select the correct one via Radio Button)</label>
+            
+            <div class="option-row">
+              <input type="radio" formControlName="correctAnswer" value="A">
+              <span class="opt-label">A</span>
+              <input type="text" class="form-input" formControlName="optionA" placeholder="Option A text">
+            </div>
+            
+            <div class="option-row">
+              <input type="radio" formControlName="correctAnswer" value="B">
+              <span class="opt-label">B</span>
+              <input type="text" class="form-input" formControlName="optionB" placeholder="Option B text">
+            </div>
+
+            <div class="option-row">
+              <input type="radio" formControlName="correctAnswer" value="C">
+              <span class="opt-label">C</span>
+              <input type="text" class="form-input" formControlName="optionC" placeholder="Option C text">
+            </div>
+
+            <div class="option-row">
+              <input type="radio" formControlName="correctAnswer" value="D">
+              <span class="opt-label">D</span>
+              <input type="text" class="form-input" formControlName="optionD" placeholder="Option D text">
+            </div>
+          </div>
+
+          <div class="add-q-actions mt-3">
+            <button type="button" class="btn btn-secondary" (click)="toggleAddQuestionForm()">Cancel</button>
+            <button type="button" class="btn btn-primary" (click)="addQuestionToList()">Confirm & Add</button>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Final Submission -->
+    <div class="submit-section mt-4">
+      <button type="submit" class="btn btn-primary w-100 btn-lg" [disabled]="isSubmitting() || testForm.invalid || questionsFormArray.length === 0">
+        {{ isSubmitting() ? 'Saving Test...' : '💾 Save Complete Test' }}
+      </button>
+    </div>
+
+  </form>
+</div>

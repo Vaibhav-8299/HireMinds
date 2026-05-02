@@ -1,0 +1,145 @@
+@if (isLoading()) {
+  <div class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading Assessment...</p>
+  </div>
+} @else if (testData() && currentQuestion()) {
+  
+  @if (hasStarted()) {
+    <div class="test-container">
+      
+      <!-- Top Bar -->
+      <div class="test-topbar glass-card">
+        <div class="test-title">
+          <span class="badge badge-info">Assessment</span>
+          <h3>{{ testData()?.title }}</h3>
+        </div>
+        
+        <!-- Timer -->
+        <div class="timer" [class.danger]="isTimeRunningOut">
+          <span class="timer-icon">⏱</span>
+          <span class="timer-text">{{ formattedTime }}</span>
+        </div>
+
+        <div class="question-progress">
+          Question {{ currentQuestionIndex() + 1 }} of {{ testData()?.questions?.length }}
+        </div>
+      </div>
+
+      <!-- Main Content Area -->
+      <div class="question-area glass-card">
+        <!-- Question Text -->
+        <div class="question-header">
+          <span class="badge badge-warning">{{ currentQuestion()?.topic }}</span>
+        </div>
+        <h2 class="question-text">{{ currentQuestion()?.text }}</h2>
+
+        <!-- Options List -->
+        <div class="options-grid">
+          @for (option of currentQuestion()?.options; track option.id; let i = $index) {
+            <div class="option-card" 
+                 [class.selected]="answers().get(currentQuestion()!.id) === option.id"
+                 (click)="selectOption(currentQuestion()!.id, option.id)">
+              
+              <div class="option-letter">{{ ['A', 'B', 'C', 'D'][i] || (i+1) }}</div>
+              <div class="option-text">{{ option.text }}</div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Bottom Navigation -->
+      <div class="bottom-nav">
+        <button class="btn btn-secondary" [disabled]="isFirstQuestion()" (click)="prevQuestion()">
+          &larr; Previous
+        </button>
+
+        <!-- Question Navigation Buttons -->
+        <div class="question-nav-grid">
+          @for (q of testData()?.questions; track q.id; let idx = $index) {
+            <button type="button" 
+                    class="nav-btn" 
+                    [class.active]="currentQuestionIndex() === idx"
+                    [class.answered]="hasAnswered(q.id)"
+                    (click)="goToQuestion(idx)">
+              {{ idx + 1 }}
+            </button>
+          }
+        </div>
+
+        <div class="nav-right">
+          @if (!isLastQuestion()) {
+            <button class="btn btn-secondary" (click)="nextQuestion()">
+              Next &rarr;
+            </button>
+          } @else {
+            <button class="btn btn-primary pulse-btn" (click)="openSubmitModal()">
+              Submit Test
+            </button>
+          }
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Submit Confirmation Modal -->
+    @if (showSubmitModal()) {
+      <div class="modal-overlay">
+        <div class="modal-card glass-card">
+          <h3>Submit Assessment?</h3>
+          <p>Are you sure you want to submit? You have answered {{ answers().size }} out of {{ testData()?.questions?.length }} questions.</p>
+          <p class="warning-text">You cannot change your answers after submitting.</p>
+          
+          <div class="modal-actions">
+            <button class="btn btn-secondary" (click)="closeSubmitModal()" [disabled]="isSubmitting()">Cancel</button>
+            <button class="btn btn-primary" (click)="submitTest()" [disabled]="isSubmitting()">
+              {{ isSubmitting() ? 'Submitting...' : 'Yes, Submit Test' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+  } @else {
+    <!-- Pre-Test Instructions Page -->
+    <div class="instructions-container">
+      <div class="glass-card instructions-card">
+        <div class="instructions-header">
+          <h2>{{ testData()?.title }}</h2>
+          <span class="badge badge-primary">Assessment</span>
+        </div>
+        
+        <div class="test-meta">
+          <div class="meta-item">
+            <span class="icon">⏱</span>
+            <div class="meta-details">
+              <strong>Duration</strong>
+              <span>{{ testData()?.timeLimitMinutes }} Minutes</span>
+            </div>
+          </div>
+          <div class="meta-item">
+            <span class="icon">📝</span>
+            <div class="meta-details">
+              <strong>Questions</strong>
+              <span>{{ testData()?.questions?.length }} Multiple Choice</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="instructions-body">
+          <h3>Instructions & Rules</h3>
+          <ul class="rules-list">
+            <li>Ensure you have a stable internet connection before starting.</li>
+            <li>The test timer will begin immediately once you click "Start Test".</li>
+            <li><strong>DO NOT refresh the page.</strong> If you refresh, the test will be automatically submitted and cannot be restarted.</li>
+            <li class="danger-rule"><strong>DO NOT switch tabs or minimize the window.</strong> The system uses strict anti-cheat tracking. A first violation will issue a warning. A second violation will auto-submit the test immediately.</li>
+          </ul>
+        </div>
+
+        <div class="instructions-footer">
+          <button class="btn btn-secondary" routerLink="/candidate/applications">Cancel & Go Back</button>
+          <button class="btn btn-primary start-btn pulse-btn" (click)="startTest()">Start Test Now</button>
+        </div>
+      </div>
+    </div>
+  }
+}

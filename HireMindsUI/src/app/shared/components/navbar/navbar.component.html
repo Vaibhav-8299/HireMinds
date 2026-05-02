@@ -1,0 +1,42 @@
+<nav class="navbar glass-card">
+  <div class="nav-brand">
+    <h1>Hire<span>Minds</span></h1>
+  </div>
+
+  <div class="nav-links">
+    <a routerLink="/candidate/jobs" routerLinkActive="active-link">Job Board</a>
+    <a routerLink="/candidate/applications" routerLinkActive="active-link">My Applications</a>
+    <a routerLink="/candidate/profile" routerLinkActive="active-link">Profile</a>
+  </div>
+
+  <div class="nav-actions">
+    <div class="notification-wrapper" *ngIf="isCandidate">
+      <button class="bell-btn" (click)="toggleDropdown()">
+        🔔
+        <span class="badge-count" *ngIf="notifications().length > 0">{{ notifications().length }}</span>
+      </button>
+
+      <div class="notif-dropdown glass-card" *ngIf="showDropdown()">
+        <h4>Notifications</h4>
+        <div class="notif-list">
+          @if (notifications().length === 0) {
+            <p class="empty-notif">No new notifications.</p>
+          } @else {
+            @for (notif of notifications(); track notif.id) {
+              <div class="notif-item" [ngClass]="notif.status === 'Selected' ? 'notif-success' : 'notif-danger'">
+                <p><strong>{{ notif.jobTitle }}</strong></p>
+                <p>Status: {{ notif.status }}</p>
+                @if (notif.selectionMessage) {
+                  <p class="notif-msg">"{{ notif.selectionMessage }}"</p>
+                }
+              </div>
+            }
+          }
+        </div>
+      </div>
+    </div>
+
+    <span class="user-name">Hi, {{ userName }}</span>
+    <button class="btn btn-secondary btn-sm" (click)="logout()">Logout</button>
+  </div>
+</nav>

@@ -1,0 +1,189 @@
+<!-- Toast -->
+@if (toastMessage()) {
+  <div class="toast" [class.success]="toastType() === 'success'" [class.error]="toastType() === 'error'">
+    {{ toastMessage() }}
+  </div>
+}
+
+@if (isLoading()) {
+  <div class="loading-state"><div class="spinner"></div><p>Loading Profile...</p></div>
+} @else {
+<div class="profile-page">
+  <div class="page-header">
+    <h1>Complete Your Profile</h1>
+    <p>Tell recruiters about your education, skills, and projects to get matched with the best jobs.</p>
+  </div>
+
+  <!-- Tip Banner -->
+  <div class="tip-banner glass-card">
+    <span class="tip-icon">💡</span>
+    <span>Please fill these optional fields for higher chances of selection — recruiters will be monitoring your complete profile.</span>
+  </div>
+
+  <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+
+    <!-- ====== Section 1: Basic Info ====== -->
+    <div class="section glass-card">
+      <h2 class="section-title"><span class="section-icon">👤</span> Basic Information</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" [value]="fullName" disabled>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" [value]="email" disabled>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== Section 2: Graduation ====== -->
+    <div class="section glass-card">
+      <h2 class="section-title"><span class="section-icon">🎓</span> Graduation Details</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Degree</label>
+          <select formControlName="degree">
+            <option value="">Select Degree</option>
+            @for (d of degreeOptions; track d) {
+              <option [value]="d">{{ d }}</option>
+            }
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Branch</label>
+          <select formControlName="branch">
+            <option value="">Select Branch</option>
+            @for (b of branchOptions; track b) {
+              <option [value]="b">{{ b }}</option>
+            }
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>College Name</label>
+          <input type="text" formControlName="collegeName" placeholder="e.g. IIT Delhi">
+        </div>
+        <div class="form-group half">
+          <label>Graduation Year</label>
+          <input type="number" formControlName="graduationYear" placeholder="e.g. 2024">
+        </div>
+        <div class="form-group half">
+          <label>SGPA / CGPA</label>
+          <input type="number" formControlName="sgpa" placeholder="e.g. 8.5" step="0.01" min="0" max="10">
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== Section 3: 10th & 12th ====== -->
+    <div class="section glass-card">
+      <h2 class="section-title"><span class="section-icon">🏫</span> 10th & 12th Details</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label>10th School Name</label>
+          <input type="text" formControlName="tenthSchoolName" placeholder="e.g. DPS, New Delhi">
+        </div>
+        <div class="form-group half">
+          <label>10th Score (%)</label>
+          <input type="number" formControlName="tenthScore" placeholder="e.g. 92.5" step="0.01" min="0" max="100">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>12th School Name</label>
+          <input type="text" formControlName="twelfthSchoolName" placeholder="e.g. DPS, New Delhi">
+        </div>
+        <div class="form-group half">
+          <label>12th Score (%)</label>
+          <input type="number" formControlName="twelfthScore" placeholder="e.g. 88.0" step="0.01" min="0" max="100">
+        </div>
+      </div>
+    </div>
+
+    <!-- ====== Section 4: Skills ====== -->
+    <div class="section glass-card">
+      <h2 class="section-title"><span class="section-icon">⚡</span> Skills</h2>
+      <p class="section-desc">Type a skill and press Enter to add it.</p>
+      <div class="skills-chips">
+        @for (skill of skillsList(); track skill) {
+          <span class="chip">
+            {{ skill }}
+            <button type="button" class="chip-remove" (click)="removeSkill(skill)">×</button>
+          </span>
+        }
+      </div>
+      <input type="text" class="skill-input" placeholder="Add a skill (e.g. Angular)..." (keydown)="addSkill($event)">
+    </div>
+
+    <!-- ====== Section 5: Projects ====== -->
+    <div class="section glass-card">
+      <h2 class="section-title"><span class="section-icon">🚀</span> Projects <span class="optional-badge">Optional</span></h2>
+      <p class="section-desc">List your notable projects to help recruiters understand your experience.</p>
+
+      <div formArrayName="projects">
+        @for (proj of projects.controls; track $index; let i = $index) {
+          <div class="dynamic-item" [formGroupName]="i">
+            <div class="dynamic-item-header">
+              <span class="item-number">Project {{ i + 1 }}</span>
+              <button type="button" class="btn-icon danger" (click)="removeProject(i)">🗑</button>
+            </div>
+            <input type="text" formControlName="title" placeholder="Project Title (e.g. HireMinds Platform)">
+            <textarea formControlName="description" placeholder="Brief description of the project, your role, and technologies used..." rows="3"></textarea>
+          </div>
+        }
+      </div>
+      <button type="button" class="btn btn-secondary add-btn" (click)="addProject()">+ Add Project</button>
+    </div>
+
+    <!-- ====== Section 6: Certifications ====== -->
+    <div class="section glass-card">
+      <h2 class="section-title"><span class="section-icon">📜</span> Certifications <span class="optional-badge">Optional</span></h2>
+      <p class="section-desc">Add any relevant certifications you have earned.</p>
+
+      <div formArrayName="certifications">
+        @for (cert of certifications.controls; track $index; let i = $index) {
+          <div class="dynamic-item" [formGroupName]="i">
+            <div class="dynamic-item-header">
+              <span class="item-number">Certification {{ i + 1 }}</span>
+              <button type="button" class="btn-icon danger" (click)="removeCertification(i)">🗑</button>
+            </div>
+            <input type="text" formControlName="name" placeholder="Certification Name (e.g. AWS Solutions Architect)">
+            <input type="text" formControlName="link" placeholder="Verification Link (optional)">
+          </div>
+        }
+      </div>
+      <button type="button" class="btn btn-secondary add-btn" (click)="addCertification()">+ Add Certification</button>
+    </div>
+
+    <!-- ====== Section 7: Resume Upload ====== -->
+    <div class="section glass-card">
+      <h2 class="section-title"><span class="section-icon">📄</span> Resume <span class="optional-badge">Optional</span></h2>
+      <p class="section-desc">Upload your resume as a PDF (max 5MB). Recruiters will be able to download it.</p>
+
+      <div class="resume-upload-area" (click)="resumeInput.click()">
+        @if (isUploading()) {
+          <div class="spinner small"></div>
+          <p>Uploading...</p>
+        } @else if (resumeUrl()) {
+          <span class="resume-icon">✅</span>
+          <p>Resume Uploaded: <strong>{{ resumeFileName() || 'resume.pdf' }}</strong></p>
+          <a [href]="'http://localhost:5034' + resumeUrl()" target="_blank" class="resume-link" (click)="$event.stopPropagation()">View Resume</a>
+        } @else {
+          <span class="resume-icon">📂</span>
+          <p>Click to upload your PDF resume</p>
+        }
+      </div>
+      <input #resumeInput type="file" accept=".pdf" hidden (change)="onFileSelected($event)">
+    </div>
+
+    <!-- Save Button -->
+    <button type="submit" class="btn btn-primary save-btn pulse-btn" [disabled]="isSaving()">
+      {{ isSaving() ? 'Saving...' : '💾 Save Profile' }}
+    </button>
+  </form>
+</div>
+}
+
+<!-- Recaptcha Container must always be in DOM for Firebase to find it -->
+<div id="recaptcha-container"></div>

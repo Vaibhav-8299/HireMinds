@@ -1,0 +1,77 @@
+<div class="page-container">
+  
+  <div class="page-header">
+    <h2>My Applications 
+      @if (!isLoading()) {
+        <span class="count-badge">{{ applications().length }}</span>
+      }
+    </h2>
+    <p>Track the status of your job applications and take pending tests.</p>
+  </div>
+
+  @if (isLoading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading applications...</p>
+    </div>
+  } @else if (applications().length === 0) {
+    <div class="empty-state glass-card">
+      <h3>No applications yet</h3>
+      <p>You haven't applied to any jobs. Find your dream role today!</p>
+      <a routerLink="/candidate/jobs" class="btn btn-primary mt-3">Browse Jobs</a>
+    </div>
+  } @else {
+    <div class="applications-list">
+      @for (app of applications(); track app.id) {
+        <div class="glass-card app-card">
+          
+          <div class="app-card-main">
+            <div class="app-details">
+              <h3 class="job-title">{{ app.jobTitle }}</h3>
+              <div class="meta-info">
+                <span>🏢 {{ app.companyName }}</span>
+                <span>📍 {{ app.location }}</span>
+                <span class="date">📅 Applied on {{ formatDate(app.appliedAt) }}</span>
+              </div>
+            </div>
+
+            <div class="app-status">
+              <!-- Score (if taken) -->
+              @if (app.score !== null && app.score !== undefined) {
+                <div class="score-display">
+                  Score: <strong>{{ app.score }} / {{ app.totalQuestions }}</strong>
+                </div>
+              }
+
+              <!-- Status Badge -->
+              <span class="badge" [ngClass]="getStatusClass(app.status)">
+                {{ getStatusText(app.status) }}
+              </span>
+            </div>
+
+            <div class="app-actions">
+              @if (app.status === 'TestPending') {
+                <a [routerLink]="['/candidate/test', app.id]" class="btn btn-primary">Take Test</a>
+              } @else if (app.status === 'TestTaken' || app.status === 'Selected' || app.status === 'Rejected') {
+                <a [routerLink]="['/candidate/result', app.id]" class="btn btn-secondary">View Result</a>
+              } @else {
+                <!-- 'Applied' state usually means waiting for recruiter to assign a test, or just generic applied -->
+                <button class="btn btn-secondary" disabled>In Review</button>
+              }
+            </div>
+          </div>
+          
+          <!-- Recruiter Feedback Message -->
+          @if (app.selectionMessage) {
+            <div class="selection-message" style="width: 100%; margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 8px; border-left: 4px solid var(--accent-purple);">
+              <h4 style="margin: 0 0 5px 0; font-size: 14px; color: var(--text-primary);">Recruiter Feedback:</h4>
+              <p style="margin: 0; font-size: 14px; color: var(--text-secondary); font-style: italic;">"{{ app.selectionMessage }}"</p>
+            </div>
+          }
+
+        </div>
+      }
+    </div>
+  }
+
+</div>

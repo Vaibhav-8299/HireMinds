@@ -1,0 +1,112 @@
+<div class="dashboard-container">
+  
+  <!-- Welcome Banner -->
+  <div class="welcome-banner">
+    <div class="banner-content">
+      <h2>Welcome back, {{ userName }}! 👋</h2>
+      <p>Here's an overview of your recruitment pipeline today.</p>
+    </div>
+    <div class="banner-actions">
+      <a routerLink="/recruiter/post-job" class="btn btn-primary">Post New Job</a>
+    </div>
+  </div>
+
+  @if (isLoading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading Dashboard...</p>
+    </div>
+  } @else {
+    
+    <!-- Stats Row -->
+    <div class="stats-grid">
+      <!-- Total Jobs -->
+      <div class="stat-card glass-card">
+        <div class="stat-icon purple-icon">📋</div>
+        <div class="stat-details">
+          <span class="stat-title">Total Jobs</span>
+          <span class="stat-value">{{ displayTotalJobs() }}</span>
+        </div>
+      </div>
+
+      <!-- Active Tests -->
+      <div class="stat-card glass-card">
+        <div class="stat-icon blue-icon">📝</div>
+        <div class="stat-details">
+          <span class="stat-title">Active Tests</span>
+          <span class="stat-value">{{ displayActiveTests() }}</span>
+        </div>
+      </div>
+
+      <!-- Total Applications -->
+      <div class="stat-card glass-card">
+        <div class="stat-icon green-icon">👥</div>
+        <div class="stat-details">
+          <span class="stat-title">Applications</span>
+          <span class="stat-value">{{ displayTotalApps() }}</span>
+        </div>
+      </div>
+
+      <!-- Shortlisted -->
+      <div class="stat-card glass-card">
+        <div class="stat-icon amber-icon">✅</div>
+        <div class="stat-details">
+          <span class="stat-title">Shortlisted</span>
+          <span class="stat-value">{{ displayShortlisted() }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Applications Table -->
+    <div class="recent-apps glass-card">
+      <div class="card-header">
+        <h3>Recent Applications</h3>
+      </div>
+      
+      @if (recentApplications().length === 0) {
+        <div class="empty-state">
+          <p>No applications received yet.</p>
+        </div>
+      } @else {
+        <div class="table-responsive">
+          <table class="glass-table">
+            <thead>
+              <tr>
+                <th>Candidate Name</th>
+                <th>Job Title</th>
+                <th>Score</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (app of recentApplications(); track app.id) {
+                <tr>
+                  <td class="fw-500">{{ app.candidateName }}</td>
+                  <td>{{ app.jobTitle }}</td>
+                  <td>
+                    @if (app.score !== null) {
+                      <strong>{{ app.score }}/{{ app.totalQuestions }}</strong>
+                    } @else {
+                      <span class="text-muted">N/A</span>
+                    }
+                  </td>
+                  <td>
+                    <span class="badge" [ngClass]="getStatusClass(app.status)">
+                      {{ getStatusText(app.status) }}
+                    </span>
+                  </td>
+                  <td>
+                    <a [routerLink]="['/recruiter/applications', app.jobId]" class="btn btn-secondary btn-sm">View Details</a>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </div>
+
+  }
+
+</div>

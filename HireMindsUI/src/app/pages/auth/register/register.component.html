@@ -1,0 +1,111 @@
+<div class="auth-container">
+  <!-- Decorative Background Orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <div class="glass-card auth-card">
+    <div class="auth-header">
+      <h2>Create Account</h2>
+      <p>Join HireMinds to find or post top jobs.</p>
+    </div>
+
+    @if (errorMessage) {
+      <div class="alert badge-danger">{{ errorMessage }}</div>
+    }
+    @if (successMessage) {
+      <div class="alert badge-success">{{ successMessage }}</div>
+    }
+
+    @if (!showOtpScreen) {
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        
+        <!-- Role Selection Cards -->
+        <div class="form-group role-selection">
+          <label class="form-label">I am a...</label>
+          <div class="role-cards">
+            <!-- Candidate Card -->
+            <div class="role-card" 
+                 [class.active]="f['role'].value === 'Candidate'" 
+                 (click)="setRole('Candidate')">
+              <span class="emoji">👤</span>
+              <span class="role-text">Candidate</span>
+            </div>
+            <!-- Recruiter Card -->
+            <div class="role-card" 
+                 [class.active]="f['role'].value === 'Recruiter'" 
+                 (click)="setRole('Recruiter')">
+              <span class="emoji">💼</span>
+              <span class="role-text">Recruiter</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Full Name Field -->
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" class="form-input" formControlName="fullName" placeholder="John Doe">
+          @if (f['fullName'].touched && f['fullName'].errors) {
+            <div class="error-text">Name is required</div>
+          }
+        </div>
+
+        <!-- Email Field -->
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-input" formControlName="email" placeholder="john@example.com">
+          @if (f['email'].touched && f['email'].errors) {
+            <div class="error-text">
+              @if (f['email'].errors['required']) { <span>Email is required</span> }
+              @if (f['email'].errors['email']) { <span>Please enter a valid email</span> }
+            </div>
+          }
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" formControlName="password" placeholder="••••••••">
+          @if (f['password'].touched && f['password'].errors) {
+            <div class="error-text">
+              @if (f['password'].errors['required']) { <span>Password is required</span> }
+              @if (f['password'].errors['minlength']) { <span>Password must be at least 6 characters</span> }
+            </div>
+          }
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mt-4" [disabled]="isLoading">
+          {{ isLoading ? 'Creating Account...' : 'Create Account' }}
+        </button>
+
+      </form>
+
+      <div class="auth-footer">
+        <p>Already have an account? <a routerLink="/login">Login</a></p>
+      </div>
+    } @else {
+      <!-- Email OTP Verification Screen -->
+      <div class="otp-container">
+        <div style="text-align: center; margin-bottom: 24px;">
+          <span style="font-size: 48px; display: block; margin-bottom: 16px;">✉️</span>
+          <h3>Verify Your Email</h3>
+          <p style="color: var(--text-secondary); font-size: 14px; margin-top: 8px;">
+            We've sent a 4-digit code to <strong>{{ registeredEmail }}</strong>.<br>Please enter it below.
+          </p>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Enter 4-Digit Code</label>
+          <input type="text" class="form-input" 
+                 [(ngModel)]="otpCode" 
+                 placeholder="1234" 
+                 maxlength="4" 
+                 style="text-align: center; font-size: 24px; letter-spacing: 8px; font-weight: bold;">
+        </div>
+
+        <button type="button" class="btn btn-primary w-100 mt-4" (click)="verifyOtp()" [disabled]="isVerifying">
+          {{ isVerifying ? 'Verifying...' : 'Verify & Login' }}
+        </button>
+      </div>
+    }
+  </div>
+</div>

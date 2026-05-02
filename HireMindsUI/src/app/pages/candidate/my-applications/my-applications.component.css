@@ -1,0 +1,176 @@
+.page-container {
+  max-width: 900px;
+  margin: 0 auto;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.page-header {
+  margin-bottom: 30px;
+}
+
+.page-header h2 {
+  font-size: 32px;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.count-badge {
+  background: var(--accent-purple);
+  color: white;
+  font-size: 16px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.page-header p {
+  color: var(--text-secondary);
+}
+
+/* Vertical List Layout */
+.applications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.app-card {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.app-card-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.app-card:hover {
+  transform: translateY(-2px);
+  background: rgba(40, 50, 75, 0.8);
+}
+
+/* App Details (Left Side) */
+.app-details {
+  flex: 2;
+}
+
+.job-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 10px 0;
+}
+
+.meta-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.date {
+  color: #94a3b8;
+}
+
+/* Status & Score (Middle) */
+.app-status {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.score-display {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.score-display strong {
+  color: var(--text-primary);
+  font-size: 15px;
+}
+
+/* Status Badge Overrides */
+.badge-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Actions (Right Side) */
+.app-actions {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.app-actions .btn {
+  min-width: 140px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .app-card-main {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  
+  .app-status {
+    align-items: flex-start;
+    width: 100%;
+  }
+  
+  .app-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  .app-actions .btn {
+    width: 100%;
+  }
+}
+
+/* UI States */
+.loading-state, .empty-state {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.empty-state h3 {
+  font-size: 22px;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+
+.empty-state p {
+  color: var(--text-secondary);
+}
+
+.mt-3 {
+  margin-top: 20px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-left-color: var(--accent-purple);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 15px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

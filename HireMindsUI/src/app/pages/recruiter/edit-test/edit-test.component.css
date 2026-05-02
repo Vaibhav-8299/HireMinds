@@ -1,0 +1,206 @@
+.page-container {
+  max-width: 900px;
+  margin: 0 auto;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.page-header {
+  margin-bottom: 30px;
+}
+
+.page-header h2 { font-size: 32px; color: var(--text-primary); margin: 0 0 5px 0; }
+.page-header p { color: var(--text-secondary); margin: 0; }
+
+.mb-4 { margin-bottom: 30px; }
+.mt-2 { margin-top: 10px; }
+.mt-3 { margin-top: 20px; }
+.mt-4 { margin-top: 40px; }
+.w-100 { width: 100%; }
+
+/* Form Layout */
+.form-row {
+  display: flex;
+  gap: 20px;
+}
+.flex-1 { flex: 1; }
+.flex-2 { flex: 2; }
+
+/* Questions Section */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 10px;
+}
+.section-header h3 { margin: 0; font-size: 20px; color: var(--text-primary); }
+
+.questions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* Rendered Question Card */
+.question-card {
+  padding: 20px;
+  border-left: 4px solid var(--accent-purple);
+}
+
+.q-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.q-number {
+  font-weight: 700;
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.q-badges {
+  flex: 1;
+  display: flex;
+  gap: 8px;
+}
+
+.q-text {
+  font-size: 16px;
+  color: var(--text-primary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.q-options {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 10px 15px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+.q-opt-item {
+  color: var(--text-secondary);
+  margin-bottom: 5px;
+}
+.q-opt-item:last-child { margin-bottom: 0; }
+.opt-bullet { color: var(--accent-purple); font-weight: bold; margin-right: 5px; }
+
+.remove-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.2s;
+  line-height: 1;
+}
+
+.remove-btn:hover {
+  color: var(--danger);
+}
+
+/* Expandable Add Question Form */
+.add-question-box {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px dashed var(--accent-purple);
+  padding: 25px;
+  animation: slideDown 0.3s ease-out forwards;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.add-question-box h4 {
+  margin: 0 0 20px 0;
+  color: var(--accent-purple);
+}
+
+/* Options radio buttons layout */
+.options-setup {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.option-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 12px;
+}
+
+.option-row:last-child { margin-bottom: 0; }
+
+.option-row input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent-purple);
+  cursor: pointer;
+}
+
+.opt-label {
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.add-q-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+.error-text {
+  color: var(--danger);
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
+}
+
+.form-actions {
+  display: flex;
+  gap: 15px;
+}
+
+.btn-lg {
+  padding: 16px;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+}
+
+textarea.form-input {
+  resize: vertical;
+  min-height: 80px;
+}
+
+select.form-input {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1em;
+}
+
+.loading-state {
+  text-align: center;
+  padding: 50px;
+}
+
+.spinner {
+  width: 40px; height: 40px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-left-color: var(--accent-purple);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 15px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }

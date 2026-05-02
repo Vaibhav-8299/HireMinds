@@ -1,0 +1,175 @@
+.dashboard-container {
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* =======================================
+   1. Welcome Banner
+   ======================================= */
+.welcome-banner {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2));
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 16px;
+  padding: 30px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  backdrop-filter: blur(10px);
+}
+
+.banner-content h2 {
+  font-size: 28px;
+  margin: 0 0 5px 0;
+  color: var(--text-primary);
+}
+
+.banner-content p {
+  color: #cbd5e1;
+  margin: 0;
+  font-size: 15px;
+}
+
+@media (max-width: 768px) {
+  .welcome-banner {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+  }
+}
+
+/* =======================================
+   2. Stats Grid
+   ======================================= */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px;
+}
+
+.stat-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+/* Gradient Icons */
+.purple-icon { background: linear-gradient(135deg, #a855f7, #7e22ce); }
+.blue-icon { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+.green-icon { background: linear-gradient(135deg, #22c55e, #15803d); }
+.amber-icon { background: linear-gradient(135deg, #f59e0b, #b45309); }
+
+.stat-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-title {
+  color: var(--text-secondary);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  color: var(--text-primary);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* =======================================
+   3. Glassmorphism Table
+   ======================================= */
+.recent-apps {
+  padding: 30px;
+}
+
+.card-header {
+  margin-bottom: 20px;
+}
+
+.card-header h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 20px;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.glass-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+}
+
+.glass-table th {
+  text-align: left;
+  padding: 12px 15px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-table td {
+  padding: 16px 15px;
+  background: rgba(15, 23, 42, 0.4);
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+/* Rounded corners for table rows */
+.glass-table td:first-child { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
+.glass-table td:last-child { border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
+
+.glass-table tr:hover td {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.fw-500 { font-weight: 500; }
+.text-muted { color: var(--text-secondary); }
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+/* UI States */
+.empty-state, .loading-state {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-secondary);
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-left-color: var(--accent-purple);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 15px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

@@ -1,0 +1,231 @@
+<div class="page-container">
+  
+  <div class="page-header">
+    <div class="header-left">
+      <a routerLink="/recruiter/my-jobs" class="back-link">&larr; Back to My Jobs</a>
+      <h2>Applicants for {{ jobTitle() }}</h2>
+      <p>Review candidate scores and update application statuses.</p>
+    </div>
+  </div>
+
+  @if (isLoading()) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading applicants...</p>
+    </div>
+  } @else if (applications().length === 0) {
+    <div class="empty-state glass-card">
+      <h3>No applicants yet 🕵️</h3>
+      <p>Once candidates apply and take the test, they will appear here.</p>
+    </div>
+  } @else {
+    
+    <div class="glass-card table-wrapper">
+      <div class="table-responsive">
+        <table class="glass-table">
+          <thead>
+            <tr>
+              <th>Candidate</th>
+              <th>Education</th>
+              <th>Test Score</th>
+              <th>Status</th>
+              <th>Applied Date</th>
+              <th class="actions-col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (app of applications(); track app.id) {
+              <tr>
+                <!-- Candidate Details -->
+                <td>
+                  <div class="cand-details">
+                    <span class="cand-name">{{ app.candidateName }}</span>
+                  </div>
+                </td>
+                
+                <!-- Education -->
+                <td>
+                  <span class="edu-pill">{{ app.degree }} - {{ app.branch }}</span>
+                </td>
+                
+                <!-- Score & Mini Bar -->
+                <td>
+                  @if (app.status === 'TestTaken' || app.status === 'Selected' || app.status === 'Rejected') {
+                    <div class="score-cell">
+                      <span class="score-text">{{ app.score }}/{{ app.totalQuestions }}</span>
+                      <div class="mini-bar-bg">
+                        <div class="mini-bar-fill" 
+                             [ngClass]="getScoreColorClass(getScorePercentage(app))"
+                             [style.width.%]="getScorePercentage(app)">
+                        </div>
+                      </div>
+                    </div>
+                  } @else {
+                    <span class="text-muted">Pending Test</span>
+                  }
+                </td>
+                
+                <!-- Status Badge -->
+                <td>
+                  <span class="badge" [ngClass]="getStatusClass(app.status)">
+                    {{ app.status === 'TestTaken' ? 'Ready for Review' : app.status }}
+                  </span>
+                </td>
+                
+                <td><span class="text-muted">{{ formatDate(app.appliedAt) }}</span></td>
+                
+                <!-- Actions -->
+                <td class="actions-col">
+                  <div class="action-buttons">
+                    <button class="btn btn-sm btn-secondary" title="View AI Feedback" (click)="openViewModal(app)">
+                      👁 View
+                    </button>
+                    
+                    @if (app.status !== 'Selected' && app.status !== 'Rejected') {
+                      <button class="btn btn-sm btn-success" title="Shortlist Candidate" (click)="initiateStatusUpdate(app.id, 'Selected')">
+                        ✅ Select
+                      </button>
+                      <button class="btn btn-sm btn-danger" title="Reject Candidate" (click)="initiateStatusUpdate(app.id, 'Rejected')">
+                        ❌ Reject
+                      </button>
+                    }
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+
+  <!-- View Candidate Profile Modal -->
+  @if (selectedAppForView()) {
+    <div class="modal-overlay" (click)="closeViewModal()">
+      <div class="modal-card glass-card modal-lg" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Candidate Profile</h3>
+          <button class="close-btn" (click)="closeViewModal()">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+          <div class="cand-profile-header">
+            <div class="avatar">👤</div>
+            <div>
+              <h4>{{ selectedAppForView()!.candidateName }}</h4>
+              <p>{{ selectedAppForView()!.degree }} ({{ selectedAppForView()!.branch }})</p>
+            </div>
+            @if (selectedAppForView()!.resumeUrl) {
+              <a [href]="'http://localhost:5034' + selectedAppForView()!.resumeUrl" target="_blank" class="btn btn-sm btn-secondary resume-dl-btn">📄 View Resume</a>
+            }
+          </div>
+
+          <!-- Education Details -->
+          <div class="profile-section">
+            <h4>🎓 Education</h4>
+            <div class="info-grid">
+              @if (selectedAppForView()!.collegeName) {
+                <div class="info-item"><span class="info-label">College</span><span class="info-value">{{ selectedAppForView()!.collegeName }}</span></div>
+              }
+              @if (selectedAppForView()!.sgpa) {
+                <div class="info-item"><span class="info-label">SGPA</span><span class="info-value">{{ selectedAppForView()!.sgpa }}</span></div>
+              }
+              @if (selectedAppForView()!.tenthSchoolName) {
+                <div class="info-item"><span class="info-label">10th School</span><span class="info-value">{{ selectedAppForView()!.tenthSchoolName }}</span></div>
+              }
+              @if (selectedAppForView()!.tenthScore) {
+                <div class="info-item"><span class="info-label">10th Score</span><span class="info-value">{{ selectedAppForView()!.tenthScore }}%</span></div>
+              }
+              @if (selectedAppForView()!.twelfthSchoolName) {
+                <div class="info-item"><span class="info-label">12th School</span><span class="info-value">{{ selectedAppForView()!.twelfthSchoolName }}</span></div>
+              }
+              @if (selectedAppForView()!.twelfthScore) {
+                <div class="info-item"><span class="info-label">12th Score</span><span class="info-value">{{ selectedAppForView()!.twelfthScore }}%</span></div>
+              }
+            </div>
+          </div>
+
+          <!-- Skills -->
+          @if (selectedAppForView()!.skills) {
+            <div class="profile-section">
+              <h4>⚡ Skills</h4>
+              <div class="skills-display">
+                @for (skill of selectedAppForView()!.skills!.split(','); track skill) {
+                  <span class="skill-chip">{{ skill.trim() }}</span>
+                }
+              </div>
+            </div>
+          }
+
+          <!-- Projects -->
+          @if (selectedAppForView()!.projects) {
+            <div class="profile-section">
+              <h4>🚀 Projects</h4>
+              @for (proj of parseJson(selectedAppForView()!.projects!); track $index) {
+                <div class="sub-card">
+                  <strong>{{ proj.title }}</strong>
+                  <p>{{ proj.description }}</p>
+                </div>
+              }
+            </div>
+          }
+
+          <!-- Certifications -->
+          @if (selectedAppForView()!.certifications) {
+            <div class="profile-section">
+              <h4>📜 Certifications</h4>
+              @for (cert of parseJson(selectedAppForView()!.certifications!); track $index) {
+                <div class="sub-card">
+                  <strong>{{ cert.name }}</strong>
+                  @if (cert.link) {
+                    <a [href]="cert.link" target="_blank" class="cert-link">🔗 View</a>
+                  }
+                </div>
+              }
+            </div>
+          }
+
+          <div class="feedback-section mt-4">
+            <h4>🤖 AI Coach Evaluation</h4>
+            @if (selectedAppForView()!.aiFeedback) {
+              <div class="ai-box">
+                <p class="ai-text">{{ selectedAppForView()!.aiFeedback }}</p>
+              </div>
+            } @else {
+              <p class="text-muted">No AI feedback available yet. Candidate must complete the test first.</p>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Confirmation Modal -->
+  @if (showConfirmModal()) {
+    <div class="modal-overlay">
+      <div class="modal-card glass-card">
+        <h3>Confirm Action</h3>
+        <p>Are you sure you want to mark this candidate as <strong>{{ confirmAction() }}</strong>?</p>
+        
+        <div class="form-group mt-3" style="text-align: left;">
+          <label class="form-label" style="font-size: 0.9em; margin-bottom: 5px; display: block;">Message for Candidate (Optional)</label>
+          <textarea 
+            class="form-input" 
+            style="width: 100%; min-height: 80px; resize: vertical; padding: 10px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white;"
+            placeholder="E.g., Congratulations! We loved your profile... or unfortunately..."
+            [value]="selectionMessage()"
+            (input)="updateMessage($event)"></textarea>
+        </div>
+
+        <div class="modal-actions mt-4">
+          <button class="btn btn-secondary" (click)="closeConfirmModal()" [disabled]="isUpdating()">Cancel</button>
+          <button class="btn" [ngClass]="confirmAction() === 'Selected' ? 'btn-success' : 'btn-danger'" 
+                  (click)="confirmUpdate()" [disabled]="isUpdating()">
+            {{ isUpdating() ? 'Updating...' : 'Yes, Proceed' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+</div>

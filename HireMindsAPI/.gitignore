@@ -1,0 +1,36 @@
+# .gitignore for ASP.NET Core Project
+
+# Build folders
+bin/
+obj/
+
+# Visual Studio files
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Development settings (CONTAINS SECRETS - DO NOT COMMIT!)
+appsettings.Development.json
+appsettings.*.json
+
+# Environment variables
+.env
+
+# Logs
+logs/
+*.log
+
+# Windows image caches
+Thumbs.db
+ehthumbs.db
+
+# Mac OS files
+.DS_Store
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~.nib

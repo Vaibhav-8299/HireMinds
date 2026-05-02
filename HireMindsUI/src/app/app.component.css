@@ -1,0 +1,24 @@
+.candidate-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 40px;
+}
+
+.recruiter-layout {
+  display: flex;
+}
+
+.recruiter-main {
+  flex: 1;
+  margin-left: 250px; /* Offset for sidebar width */
+  padding: 30px 40px;
+  min-height: 100vh;
+}
+
+.auth-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+}

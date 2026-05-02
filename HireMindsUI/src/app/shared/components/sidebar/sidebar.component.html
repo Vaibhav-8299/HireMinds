@@ -1,0 +1,21 @@
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <h1>Hire<span>Minds</span></h1>
+    <span class="role-badge badge badge-info">Recruiter</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a routerLink="/recruiter/dashboard" routerLinkActive="active-link">Dashboard</a>
+    <a routerLink="/recruiter/post-job" routerLinkActive="active-link">Post Job</a>
+    <a routerLink="/recruiter/my-jobs" routerLinkActive="active-link">My Jobs</a>
+    <a routerLink="/recruiter/create-test" routerLinkActive="active-link">Create Test</a>
+    <a routerLink="/recruiter/my-tests" routerLinkActive="active-link">Tests</a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <span class="user-name">{{ userName }}</span>
+    </div>
+    <button class="btn btn-secondary w-100" (click)="logout()">Logout</button>
+  </div>
+</aside>
