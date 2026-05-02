@@ -7,7 +7,7 @@ import { Application, ApplicationResponse } from '../models/interfaces';
   providedIn: 'root'
 })
 export class ApplicationService {
-  private readonly apiUrl = 'http://localhost:5034/api/applications';
+  private readonly apiUrl = 'https://hireminds.runasp.net/api/applications';
   private http = inject(HttpClient);
 
   applyToJob(jobId: number): Observable<any> {

@@ -7,7 +7,7 @@ import { SubmitTestRequest, TestResult } from '../models/interfaces';
   providedIn: 'root'
 })
 export class SubmissionService {
-  private readonly apiUrl = 'http://localhost:5034/api';
+  private readonly apiUrl = 'https://hireminds.runasp.net/api';
   private http = inject(HttpClient);
 
   submitTest(applicationId: number, dto: SubmitTestRequest): Observable<TestResult> {

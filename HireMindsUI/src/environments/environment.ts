@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:5034/api'
+  apiUrl: 'https://hireminds.runasp.net/api'
 };
