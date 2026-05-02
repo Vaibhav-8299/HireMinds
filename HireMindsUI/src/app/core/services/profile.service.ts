@@ -8,7 +8,7 @@ import { ProfileDto, ProfileResponse } from '../models/interfaces';
 })
 export class ProfileService {
   // Using 5034 to match the actual running backend port from earlier steps
-  private readonly apiUrl = 'https://hireminds.runasp.net/api/profile';
+  private readonly apiUrl = 'https://hireminds1.runasp.net/api/profile';
   private http = inject(HttpClient);
 
   getProfile(): Observable<ProfileResponse> {

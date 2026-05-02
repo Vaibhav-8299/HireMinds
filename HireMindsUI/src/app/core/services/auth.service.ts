@@ -7,7 +7,7 @@ import { LoginRequest, LoginResponse, RegisterRequest } from '../models/interfac
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly apiUrl = 'https://hireminds.runasp.net/api/auth';
+  private readonly apiUrl = 'https://hireminds1.runasp.net/api/auth';
   private readonly TOKEN_KEY = 'hireminds_jwt_token';
 
   constructor(private http: HttpClient) {}

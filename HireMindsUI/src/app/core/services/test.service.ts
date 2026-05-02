@@ -7,7 +7,7 @@ import { Test, TestResponse, CreateTestRequest, AddQuestionRequest } from '../mo
   providedIn: 'root'
 })
 export class TestService {
-  private readonly apiUrl = 'https://hireminds.runasp.net/api/tests';
+  private readonly apiUrl = 'https://hireminds1.runasp.net/api/tests';
   private http = inject(HttpClient);
 
   getMyTests(): Observable<Test[]> {

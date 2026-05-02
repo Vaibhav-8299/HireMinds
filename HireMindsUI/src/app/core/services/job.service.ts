@@ -7,7 +7,7 @@ import { Job, CreateJobRequest } from '../models/interfaces';
   providedIn: 'root'
 })
 export class JobService {
-  private readonly apiUrl = 'https://hireminds.runasp.net/api/jobs';
+  private readonly apiUrl = 'https://hireminds1.runasp.net/api/jobs';
   private http = inject(HttpClient);
 
   getJobs(search?: string, location?: string, company?: string): Observable<Job[]> {
