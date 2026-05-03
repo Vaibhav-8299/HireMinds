@@ -10,9 +10,10 @@
 
 .recruiter-main {
   flex: 1;
-  margin-left: 250px; /* Offset for sidebar width */
+  margin-left: 250px;
   padding: 30px 40px;
   min-height: 100vh;
+  transition: margin-left 0.3s ease;
 }
 
 .auth-main {
@@ -21,4 +22,25 @@
   justify-content: center;
   min-height: 100vh;
   padding: 20px;
+}
+
+/* ==========================================
+   Responsive Breakpoints
+   ========================================== */
+
+@media (max-width: 992px) {
+  .recruiter-main {
+    margin-left: 0;
+    padding: 20px;
+  }
+  
+  .candidate-main {
+    padding: 0 15px 30px;
+  }
+}
+
+@media (max-width: 576px) {
+  .auth-main {
+    padding: 10px;
+  }
 }

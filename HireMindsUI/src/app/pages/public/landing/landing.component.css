@@ -303,19 +303,41 @@
     flex-direction: column;
     text-align: center;
     padding: 60px 5%;
+    gap: 30px;
+  }
+
+  .hero-title {
+    font-size: 38px;
   }
 
   .hero-actions {
     justify-content: center;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .nav-nav {
+    padding: 15px 20px;
   }
 
   .feature-card, .feature-card.reverse {
     flex-direction: column;
     text-align: center;
+    padding: 30px 20px;
   }
 
   .feature-list li {
     text-align: left;
     display: inline-block;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 32px;
+  }
+  
+  .hero-subtitle {
+    font-size: 16px;
   }
 }

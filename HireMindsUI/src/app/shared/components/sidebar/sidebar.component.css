@@ -76,3 +76,18 @@
 .w-100 {
   width: 100%;
 }
+/* ==========================================
+   Responsive Sidebar
+   ========================================== */
+
+@media (max-width: 992px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  /* We would typically add a "show" class here toggled by a hamburger button */
+  .sidebar.show {
+    transform: translateX(0);
+  }
+}

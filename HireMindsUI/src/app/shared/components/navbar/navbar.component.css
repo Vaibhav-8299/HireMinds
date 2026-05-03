@@ -155,3 +155,35 @@
   padding: 6px;
   border-radius: 4px;
 }
+/* ==========================================
+   Responsive Navbar
+   ========================================== */
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 12px 20px;
+    margin-bottom: 20px;
+  }
+
+  .nav-brand h1 {
+    font-size: 20px;
+  }
+
+  .nav-links {
+    display: none; /* Hide desktop links on mobile, we can add a menu later */
+  }
+
+  .nav-actions {
+    gap: 12px;
+  }
+
+  .user-name {
+    display: none; /* Hide username on small phones */
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 10px 15px;
+  }
+}
