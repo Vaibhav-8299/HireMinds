@@ -63,7 +63,7 @@ namespace HireMindsAPI.Middleware
                     default:
                         // Any other error — don't expose internal details
                         statusCode = 500;
-                        message = "An unexpected error occurred. Please try again later.";
+                        message = "DEBUG ERROR: " + ex.Message + (ex.InnerException != null ? " | Inner: " + ex.InnerException.Message : "");
                         break;
                 }
 
