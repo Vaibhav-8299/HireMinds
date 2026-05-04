@@ -316,7 +316,7 @@
     gap: 15px;
   }
 
-  .nav-nav {
+  .landing-nav {
     padding: 15px 20px;
   }
 
@@ -333,6 +333,29 @@
 }
 
 @media (max-width: 480px) {
+  .landing-nav {
+    padding: 10px 15px;
+  }
+
+  .nav-brand h1 {
+    font-size: 20px;
+  }
+
+  .nav-actions {
+    gap: 10px;
+  }
+
+  .nav-link {
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .nav-actions .btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
   .hero-title {
     font-size: 32px;
   }

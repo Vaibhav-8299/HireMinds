@@ -3,32 +3,66 @@
   top: 0;
   left: 0;
   height: 100vh;
-  width: 250px;
-  background: rgba(15, 23, 42, 0.95);
+  width: 260px;
+  background: rgba(15, 23, 42, 0.98);
   border-right: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   flex-direction: column;
   padding: 24px 0;
   z-index: 1000;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.sidebar-brand {
+/* Collapsed State */
+.sidebar.collapsed {
+  width: 80px;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 0 24px 30px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   margin-bottom: 20px;
+  min-height: 80px;
+}
+
+.sidebar.collapsed .sidebar-header {
+  justify-content: center;
+  padding: 0 0 30px;
 }
 
 .sidebar-brand h1 {
   font-size: 24px;
   font-weight: 700;
-  margin: 0 0 8px 0;
+  margin: 0;
   color: var(--text-primary);
+  white-space: nowrap;
 }
 
 .sidebar-brand h1 span {
   background: var(--gradient-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.toggle-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .sidebar-nav {
@@ -45,6 +79,23 @@
   font-size: 15px;
   transition: all 0.3s ease;
   border-left: 3px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.sidebar.collapsed .sidebar-nav a {
+  justify-content: center;
+  padding: 14px 0;
+  gap: 0;
+}
+
+.sidebar-nav a .icon {
+  font-size: 20px;
+  min-width: 24px;
+  text-align: center;
 }
 
 .sidebar-nav a:hover {
@@ -63,8 +114,15 @@
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+.sidebar.collapsed .sidebar-footer {
+  padding: 20px 0 0;
+  display: flex;
+  justify-content: center;
+}
+
 .user-info {
   margin-bottom: 15px;
+  text-align: center;
 }
 
 .user-name {
@@ -73,21 +131,12 @@
   font-size: 14px;
 }
 
-.w-100 {
-  width: 100%;
-}
 /* ==========================================
-   Responsive Sidebar
+   Responsive Sidebar (Mobile Default Collapsed)
    ========================================== */
 
 @media (max-width: 992px) {
-  .sidebar {
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-  }
-
-  /* We would typically add a "show" class here toggled by a hamburger button */
-  .sidebar.show {
-    transform: translateX(0);
-  }
+  /* On mobile, we rely on the [class.collapsed] from the component signal */
+  /* But we can force some styles if needed */
 }
+

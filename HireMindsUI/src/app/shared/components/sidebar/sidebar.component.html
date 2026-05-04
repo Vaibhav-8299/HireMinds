@@ -1,21 +1,44 @@
-<aside class="sidebar">
-  <div class="sidebar-brand">
-    <h1>Hire<span>Minds</span></h1>
-    <span class="role-badge badge badge-info">Recruiter</span>
+<aside class="sidebar" [class.collapsed]="!isExpanded()">
+  <div class="sidebar-header">
+    <div class="sidebar-brand" *ngIf="isExpanded()">
+      <h1>Hire<span>Minds</span></h1>
+      <span class="role-badge badge badge-info">Recruiter</span>
+    </div>
+    <button class="toggle-btn" (click)="toggleSidebar()">
+      {{ isExpanded() ? '◀' : '☰' }}
+    </button>
   </div>
 
   <nav class="sidebar-nav">
-    <a routerLink="/recruiter/dashboard" routerLinkActive="active-link">Dashboard</a>
-    <a routerLink="/recruiter/post-job" routerLinkActive="active-link">Post Job</a>
-    <a routerLink="/recruiter/my-jobs" routerLinkActive="active-link">My Jobs</a>
-    <a routerLink="/recruiter/create-test" routerLinkActive="active-link">Create Test</a>
-    <a routerLink="/recruiter/my-tests" routerLinkActive="active-link">Tests</a>
+    <a routerLink="/recruiter/dashboard" routerLinkActive="active-link" [title]="'Dashboard'">
+      <span class="icon">📊</span>
+      <span class="link-text" *ngIf="isExpanded()">Dashboard</span>
+    </a>
+    <a routerLink="/recruiter/post-job" routerLinkActive="active-link" [title]="'Post Job'">
+      <span class="icon">📝</span>
+      <span class="link-text" *ngIf="isExpanded()">Post Job</span>
+    </a>
+    <a routerLink="/recruiter/my-jobs" routerLinkActive="active-link" [title]="'My Jobs'">
+      <span class="icon">💼</span>
+      <span class="link-text" *ngIf="isExpanded()">My Jobs</span>
+    </a>
+    <a routerLink="/recruiter/create-test" routerLinkActive="active-link" [title]="'Create Test'">
+      <span class="icon">🛠️</span>
+      <span class="link-text" *ngIf="isExpanded()">Create Test</span>
+    </a>
+    <a routerLink="/recruiter/my-tests" routerLinkActive="active-link" [title]="'Tests'">
+      <span class="icon">📋</span>
+      <span class="link-text" *ngIf="isExpanded()">Tests</span>
+    </a>
   </nav>
 
   <div class="sidebar-footer">
-    <div class="user-info">
+    <div class="user-info" *ngIf="isExpanded()">
       <span class="user-name">{{ userName }}</span>
     </div>
-    <button class="btn btn-secondary w-100" (click)="logout()">Logout</button>
+    <button class="btn btn-secondary w-100" (click)="logout()" [title]="'Logout'">
+      <span class="icon">🚪</span>
+      <span class="link-text" *ngIf="isExpanded()">Logout</span>
+    </button>
   </div>
 </aside>
