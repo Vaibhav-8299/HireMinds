@@ -15,7 +15,8 @@ export class SidebarComponent {
   router = inject(Router);
 
   userName = this.authService.getUserName() || 'Recruiter';
-  isExpanded = signal<boolean>(true); // Start expanded by default
+  // Start expanded only if screen is larger than mobile/tablet breakpoint
+  isExpanded = signal<boolean>(window.innerWidth > 992);
 
   toggleSidebar() {
     this.isExpanded.update(v => !v);

@@ -1,6 +1,6 @@
 <aside class="sidebar" [class.collapsed]="!isExpanded()">
   <div class="sidebar-header">
-    <div class="sidebar-brand" *ngIf="isExpanded()">
+    <div class="sidebar-brand">
       <h1>Hire<span>Minds</span></h1>
       <span class="role-badge badge badge-info">Recruiter</span>
     </div>
@@ -12,33 +12,33 @@
   <nav class="sidebar-nav">
     <a routerLink="/recruiter/dashboard" routerLinkActive="active-link" [title]="'Dashboard'">
       <span class="icon">📊</span>
-      <span class="link-text" *ngIf="isExpanded()">Dashboard</span>
+      <span class="link-text">Dashboard</span>
     </a>
     <a routerLink="/recruiter/post-job" routerLinkActive="active-link" [title]="'Post Job'">
       <span class="icon">📝</span>
-      <span class="link-text" *ngIf="isExpanded()">Post Job</span>
+      <span class="link-text">Post Job</span>
     </a>
     <a routerLink="/recruiter/my-jobs" routerLinkActive="active-link" [title]="'My Jobs'">
       <span class="icon">💼</span>
-      <span class="link-text" *ngIf="isExpanded()">My Jobs</span>
+      <span class="link-text">My Jobs</span>
     </a>
     <a routerLink="/recruiter/create-test" routerLinkActive="active-link" [title]="'Create Test'">
       <span class="icon">🛠️</span>
-      <span class="link-text" *ngIf="isExpanded()">Create Test</span>
+      <span class="link-text">Create Test</span>
     </a>
     <a routerLink="/recruiter/my-tests" routerLinkActive="active-link" [title]="'Tests'">
       <span class="icon">📋</span>
-      <span class="link-text" *ngIf="isExpanded()">Tests</span>
+      <span class="link-text">Tests</span>
     </a>
   </nav>
 
   <div class="sidebar-footer">
-    <div class="user-info" *ngIf="isExpanded()">
+    <div class="user-info">
       <span class="user-name">{{ userName }}</span>
     </div>
     <button class="btn btn-secondary w-100" (click)="logout()" [title]="'Logout'">
       <span class="icon">🚪</span>
-      <span class="link-text" *ngIf="isExpanded()">Logout</span>
+      <span class="link-text">Logout</span>
     </button>
   </div>
 </aside>

@@ -131,12 +131,24 @@
   font-size: 14px;
 }
 
-/* ==========================================
-   Responsive Sidebar (Mobile Default Collapsed)
-   ========================================== */
-
-@media (max-width: 992px) {
-  /* On mobile, we rely on the [class.collapsed] from the component signal */
-  /* But we can force some styles if needed */
+/* Hide text elements when collapsed */
+.sidebar.collapsed .sidebar-brand,
+.sidebar.collapsed .link-text,
+.sidebar.collapsed .user-info {
+  display: none;
 }
 
+/* On Desktop (> 992px), we want the sidebar to always be expanded. 
+   We hide the toggle button. */
+@media (min-width: 993px) {
+  .toggle-btn {
+    display: none;
+  }
+}
+
+/* On Mobile (<= 992px), we allow toggling. */
+@media (max-width: 992px) {
+  .toggle-btn {
+    display: flex;
+  }
+}
